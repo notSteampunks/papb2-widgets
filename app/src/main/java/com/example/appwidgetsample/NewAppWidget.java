@@ -3,7 +3,11 @@ package com.example.appwidgetsample;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * Implementation of App Widget functionality.
@@ -17,10 +21,25 @@ public class NewAppWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
         views.setTextViewText(R.id.appwidget_id, String.valueOf(appWidgetId));
 
+        SharedPreferences pref = context.getSharedPreferences(mSharedFile, 0);
+        int count = pref.getInt(COUNT_KEY+appWidgetId, 0);
+        count++;
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(COUNT_KEY+appWidgetId, count);
+        editor.apply();
+
+        String currentTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+        String outputUpdate = String.valueOf(count) + "@" + currentTime;
+
+        views.setTextViewText(R.id.appwidget_update, outputUpdate);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
+    private static final String mSharedFile = BuildConfig.APPLICATION_ID;
+    private static final String COUNT_KEY = "count";
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them

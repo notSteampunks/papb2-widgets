@@ -29,6 +29,27 @@
             android:textColor="@color/black"
             android:layout_weight="1"
             />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/section_update"
+        android:layout_below="@+id/section_id"
+        android:background="@color/white"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Updated"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/appwidget_update"
+            android:textColor="@color/black"
+            />
     </LinearLayout>
 </RelativeLayout>
