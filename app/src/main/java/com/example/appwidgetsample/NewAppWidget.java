@@ -1,8 +1,10 @@
 package com.example.appwidgetsample;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
@@ -33,6 +35,16 @@ public class NewAppWidget extends AppWidgetProvider {
         String outputUpdate = String.valueOf(count) + "@" + currentTime;
 
         views.setTextViewText(R.id.appwidget_update, outputUpdate);
+
+        Intent intentUpdate = new Intent(context, NewAppWidget.class);
+        intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+        int [] idsArray = new int[] {appWidgetId};
+        intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idsArray);
+
+        PendingIntent pendingUpdate = PendingIntent.getBroadcast(context, appWidgetId, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        views.setOnClickPendingIntent(R.id.update_btn, pendingUpdate);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
